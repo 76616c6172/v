@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 
+	"github.com/76616c6172/v/bluetooth"
 	"github.com/76616c6172/v/brightness"
 	Z "github.com/rwxrob/bonzai/z"
 	"github.com/rwxrob/help"
@@ -43,7 +44,7 @@ func main() {
 var Cmd = &Z.Cmd{
 
 	Name:      `v`,
-	Summary:   `CLI for controlling vulpix`,
+	Summary:   `vulpix CLI`,
 	Copyright: `Copyright 2023 valar`,
 	Version:   `v0.0.1`,
 	License:   `Apache-2.0`,
@@ -54,6 +55,7 @@ var Cmd = &Z.Cmd{
 	Commands: []*Z.Cmd{
 		help.Cmd,
 		brightness.Cmd,
+		bluetooth.Cmd,
 
 		// openapi.Cmd, update.Cmd, goutil.Cmd
 	},

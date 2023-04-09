@@ -6,14 +6,13 @@ Custom CLI tool to interact with my laptop (vulpix), stateful command tree built
 ## Installation
 
 ```bash
-git clone github.com/76616c6172/v
-cd v
-./install.sh
+git clone https://github.com/76616c6172/v.git && cd v && ./install.sh
 ```
 
 ```bash
-# Add to your .zshrc or .bashrc
-complete -o nospace -C v v
+# To enable tab completions:
+# Add this line to your .zshrc or .bashrc
+complete -C v v
 ```
 
 ## Usage
