@@ -52,6 +52,10 @@ var Cmd = &Z.Cmd{
 	Source:    `git@github.com:76616c6172/v.git`,
 	Issues:    `github.com/76616c6172/v/issues`,
 
+	Description: `
+		CLI tool to interact with my laptop (vulpix)
+		`,
+
 	Commands: []*Z.Cmd{
 		help.Cmd,
 		brightness.Cmd,
@@ -78,8 +82,4 @@ var Cmd = &Z.Cmd{
 		//`ytlink`:    {`filter`, `youtube`, `linkify`},
 		//`long version of path`: {`env`, `get`, `path`},
 	},
-
-	Description: `
-		o.o
-		`,
 }
