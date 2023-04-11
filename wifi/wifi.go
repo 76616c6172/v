@@ -77,8 +77,10 @@ func (m model) Update(msg bubbletea.Msg) (bubbletea.Model, bubbletea.Cmd) {
 
 func (m model) View() string {
 	list := ""
+
 	for i, choice := range m.choices {
 		style := lipgloss.NewStyle()
+		style.PaddingBottom(0)
 		if i == m.cursor {
 			style = style.Foreground(lipgloss.Color("205"))
 		}
@@ -90,6 +92,7 @@ func (m model) View() string {
 		BorderForeground(lipgloss.Color("241")).
 		Padding(1).
 		Width(30)
+	boxStyle.MarginBottom(1)
 
 	b := boxStyle.Render(list)
 
@@ -131,6 +134,7 @@ var connectCmd = &Z.Cmd{
 				fmt.Println("Error running nmcli command:", err)
 				return err
 			}
+			fmt.Printf("Connected to %s at %s\n", availNetworks[cursor][1], selectedNetwork[0])
 		} else {
 			fmt.Println("No network selected.")
 		}
