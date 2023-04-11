@@ -10,7 +10,7 @@ import (
 
 var Cmd = &Z.Cmd{
 	Name:     `brightness`,
-	Summary:  `changes screen brightness`,
+	Summary:  `change screen brightness`,
 	Commands: []*Z.Cmd{help.Cmd, dimCmd, fullCmd},
 }
 
