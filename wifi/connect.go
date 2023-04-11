@@ -16,9 +16,6 @@ type model struct {
 	selected bool
 }
 
-var cursor int
-var selected bool = false
-
 var connectCmd = &Z.Cmd{
 	Name:    `connect`,
 	Summary: `connect to network (interative)`,
@@ -37,21 +34,21 @@ var connectCmd = &Z.Cmd{
 		}
 
 		m := model{choices: choices}
-		p := bubbletea.NewProgram(m)
-		if _, err = p.Run(); err != nil {
+		if _, err := bubbletea.NewProgram(&m).Run(); err != nil {
 			fmt.Printf("Error running bubble tea program: %v\n", err)
 			return err
+
 		}
 
-		if selected {
-			selectedNetwork := availNetworks[cursor]
+		if m.selected {
+			selectedNetwork := availNetworks[m.cursor]
 			cmd := exec.Command("nmcli", "device", "wifi", "connect", selectedNetwork[0])
 			err := cmd.Run()
 			if err != nil {
 				fmt.Println("Error running nmcli command:", err)
 				return err
 			}
-			fmt.Printf("Connected to %s at %s\n", availNetworks[cursor][1], selectedNetwork[0])
+			fmt.Printf("Connected to %s at %s\n", availNetworks[m.cursor][1], selectedNetwork[0])
 		} else {
 			fmt.Println("No network selected.")
 		}
@@ -93,7 +90,7 @@ func (m model) Init() bubbletea.Cmd {
 	return nil
 }
 
-func (m model) Update(msg bubbletea.Msg) (bubbletea.Model, bubbletea.Cmd) {
+func (m *model) Update(msg bubbletea.Msg) (bubbletea.Model, bubbletea.Cmd) {
 	switch msg := msg.(type) {
 	case bubbletea.KeyMsg:
 		switch msg.String() {
@@ -102,8 +99,6 @@ func (m model) Update(msg bubbletea.Msg) (bubbletea.Model, bubbletea.Cmd) {
 			return m, bubbletea.Quit
 		case "enter", "y":
 			m.selected = true
-			selected = true
-			cursor = m.cursor
 			return m, bubbletea.Quit
 		case "up", "k":
 			if m.cursor > 0 {
