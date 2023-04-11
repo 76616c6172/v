@@ -13,11 +13,11 @@ import (
 var Cmd = &Z.Cmd{
 	Name:     `bluetooth`,
 	Summary:  `manage bluetooth devices`,
-	Commands: []*Z.Cmd{help.Cmd, connectBudsCmd, disconnectBudsCmd},
+	Commands: []*Z.Cmd{help.Cmd, connectBudsProCmd, disconnectBudsProCmd},
 }
 
-var connectBudsCmd = &Z.Cmd{
-	Name:    `connect_pixel_buds`,
+var connectBudsProCmd = &Z.Cmd{
+	Name:    `connect_pixel_buds_pro`,
 	Summary: `connect Pixel Buds Pro`,
 	Call: func(_ *Z.Cmd, args ...string) error {
 		cmd := exec.Command("bluetoothctl", "connect", "24:29:34:A7:12:1D")
@@ -26,14 +26,14 @@ var connectBudsCmd = &Z.Cmd{
 			fmt.Println("Error running bluetoothctl command:", err)
 			return err
 		}
-		fmt.Println("conected to Pixel Buds Pro")
+		fmt.Println("Conected: Pixel Buds Pro")
 
 		return nil
 	},
 }
 
-var disconnectBudsCmd = &Z.Cmd{
-	Name:    `disconnect_pixel_buds`,
+var disconnectBudsProCmd = &Z.Cmd{
+	Name:    `disconnect_pixel_buds_pro`,
 	Summary: `disconnect Pixel Buds Pro`,
 	Call: func(_ *Z.Cmd, args ...string) error {
 		cmd := exec.Command("bluetoothctl", "disconnect", "24:29:34:A7:12:1D")
@@ -42,7 +42,7 @@ var disconnectBudsCmd = &Z.Cmd{
 			fmt.Println("Error running bluetoothctl command:", err)
 			return err
 		}
-		fmt.Println("disconected to Pixel Buds Pro")
+		fmt.Println("Disconected: Pixel Buds Pro")
 
 		return nil
 	},

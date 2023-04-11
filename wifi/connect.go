@@ -48,9 +48,9 @@ var connectCmd = &Z.Cmd{
 				fmt.Println("Error running nmcli command:", err)
 				return err
 			}
-			fmt.Printf("Connected to %s at %s\n", availNetworks[m.cursor][1], selectedNetwork[0])
+			fmt.Printf("connected to: %s at %s\n", availNetworks[m.cursor][1], selectedNetwork[0])
 		} else {
-			fmt.Println("No network selected.")
+			fmt.Println("no network selected.")
 		}
 
 		return nil
