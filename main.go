@@ -5,6 +5,7 @@ import (
 
 	"github.com/76616c6172/v/bluetooth"
 	"github.com/76616c6172/v/brightness"
+	"github.com/76616c6172/v/volume"
 	"github.com/76616c6172/v/wifi"
 	Z "github.com/rwxrob/bonzai/z"
 	"github.com/rwxrob/help"
@@ -62,6 +63,7 @@ var Cmd = &Z.Cmd{
 		brightness.Cmd,
 		bluetooth.Cmd,
 		wifi.Cmd,
+		volume.Cmd,
 
 		// openapi.Cmd, update.Cmd, goutil.Cmd
 	},
