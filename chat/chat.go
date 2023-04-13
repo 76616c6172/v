@@ -16,10 +16,16 @@ import (
 
 var Cmd = &Z.Cmd{
 	Name:     `chat`,
-	Summary:  `call gpt-3.5`,
+	Summary:  `ask gpt-3.5`,
 	Commands: []*Z.Cmd{help.Cmd},
 	Call: func(_ *Z.Cmd, args ...string) error {
-		response, err := CallLLM(strings.Join(args, " "))
+		key, err := getAPIKey()
+		if err != nil {
+			fmt.Println("Error could not get OpenAI API key from file: ~/.config/v/chat")
+			return err
+		}
+
+		response, err := CallLLM(strings.Join(args, " "), key)
 		if err != nil {
 			fmt.Println("Error getting response from OpenAI", err)
 			return err
@@ -46,14 +52,9 @@ func getAPIKey() (string, error) {
 	return strings.TrimSpace(buf.String()), nil
 }
 
-func CallLLM(prompt string) (string, error) {
-	key, err := getAPIKey()
-	if err != nil {
-		fmt.Println("Error could not get OpenAI API key from file: ~/.config/v/chat")
-		return " ", err
-	}
+func CallLLM(p, k string) (string, error) {
 
-	client := openai.NewClient(key)
+	client := openai.NewClient(k)
 	context := context.Background()
 
 	request := openai.ChatCompletionRequest{
@@ -66,7 +67,7 @@ func CallLLM(prompt string) (string, error) {
 			},
 			{
 				Role:    openai.ChatMessageRoleUser,
-				Content: prompt,
+				Content: p,
 			},
 		},
 		Stream: false,

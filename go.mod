@@ -3,6 +3,7 @@ module github.com/76616c6172/v
 go 1.19
 
 require (
+	github.com/76616c6172/help v0.0.0-20230413045349-5dad167b8c75 // indirect
 	github.com/alecthomas/chroma v0.10.0 // indirect
 	github.com/aymanbagabas/go-osc52/v2 v2.0.1 // indirect
 	github.com/aymerick/douceur v0.2.0 // indirect

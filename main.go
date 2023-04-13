@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 
+	"github.com/76616c6172/help"
 	"github.com/76616c6172/v/bluetooth"
 	"github.com/76616c6172/v/brightness"
 	"github.com/76616c6172/v/chat"
@@ -10,7 +11,6 @@ import (
 	"github.com/76616c6172/v/wifi"
 
 	Z "github.com/rwxrob/bonzai/z"
-	"github.com/rwxrob/help"
 )
 
 func init() {

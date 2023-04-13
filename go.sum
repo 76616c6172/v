@@ -1,3 +1,5 @@
+github.com/76616c6172/help v0.0.0-20230413045349-5dad167b8c75 h1:EX6SJYlzfyHB2zUwI7wPAuzk+GwWssaHKPxOKI/+uvE=
+github.com/76616c6172/help v0.0.0-20230413045349-5dad167b8c75/go.mod h1:oUrjBgwthfrovoXRtIacX8SBz4iUzq3TbxnqANpdYy0=
 github.com/alecthomas/chroma v0.10.0 h1:7XDcGkCQopCNKjZHfYrNLraA+M7e0fMiJ/Mfikbfjek=
 github.com/alecthomas/chroma v0.10.0/go.mod h1:jtJATyUxlIORhUOFNA9NZDWGAQ8wpxQQqNSB4rjA/1s=
 github.com/aymanbagabas/go-osc52 v1.0.3/go.mod h1:zT8H+Rk4VSabYN90pWyugflM3ZhpTZNC7cASDfUCdT4=
