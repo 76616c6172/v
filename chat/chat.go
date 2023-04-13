@@ -37,6 +37,10 @@ var Cmd = &Z.Cmd{
 
 func getAPIKey() (string, error) {
 	homedir, err := os.UserHomeDir()
+	if err != nil {
+		return "", err
+	}
+
 	file, err := os.Open(homedir + "/.config/v/chat")
 	if err != nil {
 		return "", err
@@ -53,7 +57,6 @@ func getAPIKey() (string, error) {
 }
 
 func CallLLM(p, k string) (string, error) {
-
 	client := openai.NewClient(k)
 	context := context.Background()
 
