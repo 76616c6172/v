@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"os/exec"
 
+	"github.com/76616c6172/help"
 	Z "github.com/rwxrob/bonzai/z"
-	"github.com/rwxrob/help"
 )
 
 var Cmd = &Z.Cmd{
