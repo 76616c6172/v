@@ -52,7 +52,7 @@ var Cmd = &Z.Cmd{
 	Copyright: `Copyright 2023 valar`,
 	Version:   `v0.0.1`,
 	License:   `Apache-2.0`,
-	Site:      `github.com/76616c6172`,
+	Site:      `76616c6172.com`,
 	Source:    `git@github.com:76616c6172/v.git`,
 	Issues:    `github.com/76616c6172/v/issues`,
 
@@ -62,13 +62,11 @@ var Cmd = &Z.Cmd{
 
 	Commands: []*Z.Cmd{
 		help.Cmd,
-		brightness.Cmd,
 		bluetooth.Cmd,
-		wifi.Cmd,
-		volume.Cmd,
+		brightness.Cmd,
 		chat.Cmd,
-
-		// openapi.Cmd, update.Cmd, goutil.Cmd
+		volume.Cmd,
+		wifi.Cmd,
 	},
 
 	Shortcuts: Z.ArgMap{

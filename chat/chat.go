@@ -1,47 +1,148 @@
 package chat
 
 import (
-	"context"
+	"bufio"
+	"bytes"
+	"encoding/json"
 	"fmt"
 	"io"
+	"net/http"
 	"os"
 	"strings"
-
-	"github.com/charmbracelet/glamour"
+	"time"
 
 	Z "github.com/rwxrob/bonzai/z"
-	"github.com/rwxrob/help"
-	"github.com/sashabaranov/go-openai"
+
+	"github.com/76616c6172/help"
+	"github.com/charmbracelet/glamour"
+	"github.com/theckman/yacspin"
 )
 
 var Cmd = &Z.Cmd{
-	Name:     `chat`,
-	Summary:  `ask gpt-3.5`,
+	Name:    `chat`,
+	Summary: `interactively chat with gpt-3.5`,
+	Description: `
+		Reads OpenAI API Key from $HOME/.config/v/chat/key and system prompt from $HOME/.config/v/chat/sysprompt
+		`,
+
 	Commands: []*Z.Cmd{help.Cmd},
 	Call: func(_ *Z.Cmd, args ...string) error {
-		key, err := getAPIKey()
+		sysprompt, err := getStringFromFile("sysprompt")
 		if err != nil {
-			fmt.Println("Error could not get OpenAI API key from file: ~/.config/v/chat")
-			return err
+			fmt.Println(err)
+			os.Exit(1)
+		}
+		apikey, err := getStringFromFile("key")
+		if err != nil {
+			fmt.Println(err)
+			os.Exit(1)
 		}
 
-		response, err := CallLLM(strings.Join(args, " "), key)
-		if err != nil {
-			fmt.Println("Error getting response from OpenAI", err)
-			return err
-		}
+		run_chat_in_terminal(sysprompt, apikey)
 
-		return renderMarkdown(response)
+		return nil
 	},
 }
 
-func getAPIKey() (string, error) {
+func run_chat_in_terminal(sysprompt, apiKey string) {
+	var messages []message
+	messages = append(messages, message{
+		Role:    "system",
+		Content: sysprompt,
+	})
+
+	for {
+		//print("▸ ")
+		print("⌗ ")
+		scanner := bufio.NewScanner(os.Stdin)
+		if !scanner.Scan() {
+			fmt.Println("")
+			break
+		}
+
+		name := scanner.Text()
+
+		messages = append(messages, message{
+			Role:    "user",
+			Content: name,
+		})
+
+		cfg := yacspin.Config{
+			Frequency:       100 * time.Millisecond,
+			CharSet:         yacspin.CharSets[11],
+			Suffix:          "",
+			SuffixAutoColon: true,
+			Message:         "",
+			//StopCharacter:   "✔",
+			StopCharacter: "🔮",
+			ColorAll:      true,
+			Colors:        []string{"fgCyan"},
+			StopColors:    []string{"fgCyan"},
+		}
+
+		spinner, err := yacspin.New(cfg)
+		if err != nil {
+			panic(err)
+		}
+
+		spinner.Start()
+
+		postbody := &PostBody{
+			Model:    OPENAI_MODEL,
+			Messages: messages,
+		}
+
+		body, err := json.Marshal(postbody)
+		if err != nil {
+			panic(err)
+		}
+
+		r, err := http.NewRequest("POST", CHAT_GPT_URL, bytes.NewBuffer(body))
+		if err != nil {
+			panic(err)
+		}
+		r.Header.Add("Content-Type", "application/json")
+		r.Header.Add("Authorization", "Bearer "+apiKey)
+
+		client := &http.Client{}
+		res, err := client.Do(r)
+		if err != nil {
+			panic(err)
+		}
+
+		responseBody := &ResponseBody{}
+		derr := json.NewDecoder(res.Body).Decode(responseBody)
+		if derr != nil {
+			panic(derr)
+		}
+		res.Body.Close()
+
+		generated := responseBody.Choices[0].Message
+		messages = append(messages, generated)
+
+		spinner.Stop()
+		renderMarkdown(generated.Content)
+	}
+}
+
+func renderMarkdown(str string) error {
+	output, err := glamour.Render(str, "dark")
+	if err != nil {
+		fmt.Println("Error rendering markdown text", err)
+		return err
+	}
+	fmt.Print(output)
+
+	return nil
+}
+
+func getStringFromFile(filename string) (string, error) {
 	homedir, err := os.UserHomeDir()
 	if err != nil {
 		return "", err
 	}
 
-	file, err := os.Open(homedir + "/.config/v/chat")
+	file, err := os.Open(homedir + "/.config/v/chat/" + filename)
 	if err != nil {
 		return "", err
 	}
@@ -54,44 +155,4 @@ func getAPIKey() (string, error) {
 	}
 
 	return strings.TrimSpace(buf.String()), nil
-}
-
-func CallLLM(p, k string) (string, error) {
-	client := openai.NewClient(k)
-	context := context.Background()
-
-	request := openai.ChatCompletionRequest{
-		Model:     openai.GPT3Dot5Turbo,
-		MaxTokens: 1000,
-		Messages: []openai.ChatCompletionMessage{
-			{
-				Role:    openai.ChatMessageRoleSystem,
-				Content: "You are a large language model trained by OpenAI. Please follow the user's instructions carefully. Respond using markdown and be extremely concise.",
-			},
-			{
-				Role:    openai.ChatMessageRoleUser,
-				Content: p,
-			},
-		},
-		Stream: false,
-	}
-
-	response, err := client.CreateChatCompletion(context, request)
-	if err != nil {
-		fmt.Printf("ChatCompletion error: %v\n", err)
-		return "", err
-	}
-
-	return response.Choices[0].Message.Content, err
-}
-
-func renderMarkdown(str string) error {
-	output, err := glamour.Render(str, "dark")
-	if err != nil {
-		fmt.Println("Error rendering markdown text", err)
-		return err
-	}
-	fmt.Print(output)
-
-	return nil
 }
