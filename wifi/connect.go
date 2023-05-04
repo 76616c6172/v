@@ -65,7 +65,12 @@ func parseNetworks(input string) [][]string {
 	lines := strings.Split(input, "\n")
 	availNetworks := make([][]string, 0)
 
+	max := 20
 	for i, line := range lines {
+		if max == 0 {
+			break
+		}
+
 		if i == 0 || len(strings.TrimSpace(line)) == 0 {
 			continue
 		}
@@ -80,6 +85,7 @@ func parseNetworks(input string) [][]string {
 			}
 
 			availNetworks = append(availNetworks, []string{bssid, ssid})
+			max--
 		}
 	}
 
