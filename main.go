@@ -43,21 +43,19 @@ func main() {
 	*/
 
 	Cmd.Run()
+
 }
 
 var Cmd = &Z.Cmd{
 
-	Name:      `v`,
-	Summary:   `vulpix CLI`,
-	Copyright: `Copyright 2023 valar`,
-	Version:   `v0.0.1`,
-	License:   `Apache-2.0`,
-	Site:      `76616c6172.com`,
-	Source:    `git@github.com:76616c6172/v.git`,
-	Issues:    `github.com/76616c6172/v/issues`,
+	Name:    `v`,
+	Summary: `vulpix CLI`,
+	Site:    `76616c6172.com`,
+	Source:  `git@github.com:76616c6172/v.git`,
+	Issues:  `github.com/76616c6172/v/issues`,
 
 	Description: `
-		CLI tool to interact with my laptop (vulpix)
+		CLI for my laptop (vulpix)
 		`,
 
 	Commands: []*Z.Cmd{
