@@ -6,7 +6,6 @@ import (
 	"github.com/76616c6172/help"
 	"github.com/76616c6172/v/bluetooth"
 	"github.com/76616c6172/v/brightness"
-	"github.com/76616c6172/v/chat"
 	"github.com/76616c6172/v/volume"
 	"github.com/76616c6172/v/wifi"
 
@@ -62,7 +61,6 @@ var Cmd = &Z.Cmd{
 		help.Cmd,
 		bluetooth.Cmd,
 		brightness.Cmd,
-		chat.Cmd,
 		volume.Cmd,
 		wifi.Cmd,
 	},
